@@ -6,7 +6,7 @@ from django.db.utils import load_backend
 
 from podcast.managers import EpisodeManager
 
-PODCAST_STORAGE = get_storage_class(getattr(settings, 'PODCAST_STORAGE', setting.DEFAULT_FILE_STORAGE)) 
+PODCAST_STORAGE = get_storage_class(getattr(settings, 'PODCAST_STORAGE', settings.DEFAULT_FILE_STORAGE)) 
 
 class ParentCategory(models.Model):
     """Parent Category model."""
