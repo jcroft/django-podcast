@@ -14,7 +14,7 @@
     <docs>http://blogs.law.harvard.edu/tech/rss</docs>
     {% if object.ttl %}<ttl>{{ object.ttl }}</ttl>{% endif %}
     {% if object.image %}<image>
-      <url>{{ object.image.url }}</url>
+      <url>http://{{ request.META.HTTP_HOST }}{{ object.image.url }}</url>
       <title>{{ object.title }}</title>
       <link>{{ object.link }}</link>
     </image>{% endif %}
@@ -37,12 +37,12 @@
 
     {% for episode in object.episode_set.published %}<item>
         <title>{{ episode.title }}</title>
-        <link>{{ episode.enclosure_set.all.0.file.url }}</link>
+        <link>http://{{ request.META.HTTP_HOST }}{{ episode.get_absolute_url }}</link>
         <description>{{ episode.description|striptags }}</description>
         <author>{% for author in object.author.all %}{{ author.email }}{% if forloop.last %}{% else %}, {% endif %}{% endfor %}</author>
         {% if episode.category %}<category{% if episode.domain %} url="{{ episode.domain }}"{% endif %}>{{ episode.category }}</category>{% endif %}
-        <enclosure url="{{ episode.enclosure_set.all.0.file.url }}" length="{{ episode.enclosure_set.all.0.file.size }}" type="{{ episode.enclosure_set.all.0.mime }}" />
-        <guid isPermalink="true">{{ episode.enclosure_set.all.0.file.url }}</guid>
+        <enclosure url="http://{{ request.META.HTTP_HOST}}{{ episode.enclosure_set.all.0.file.url }}" length="{{ episode.enclosure_set.all.0.file.size }}" type="{{ episode.enclosure_set.all.0.mime }}" />
+        <guid isPermalink="true">http://{{ request.META.HTTP_HOST}}{{ episode.enclosure_set.all.0.file.url }}</guid>
         <pubDate>{{ episode.date|date:"r" }} GMT</pubDate>
         <itunes:author>{% for author in episode.author.all %}{% if forloop.first %}{% else %}{% if forloop.last %} and {% else %}, {% endif %}{% endif %}{% if author.first_name or author.last_name %}{% if author.first_name and author.last_name %}{{ author.first_name }} {{ author.last_name }}{% endif %}{% if author.first_name and not author.last_name %}{{ author.first_name }}{% endif %}{% if author.last_name and not author.first_name %}{{ author.last_name }}{% endif %}{% else %}{{ author.username }}{% endif %}{% endfor %}</itunes:author>
         {% if episode.subtitle %}<itunes:subtitle>{{ episode.subtitle }}</itunes:subtitle>{% endif %}
