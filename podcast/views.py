@@ -97,7 +97,10 @@ def show_list_atom(request, slug, template_name='podcast/show_feed_atom.html'):
         mimetype='application/rss+xml',
         slug_field='slug',
         slug=slug,
-        template_name=template_name)
+        template_name=template_name,
+        extra_context={
+          'request': request,
+        })
 
 
 def show_list_feed(request, slug, template_name='podcast/show_feed.html'):
@@ -114,7 +117,10 @@ def show_list_feed(request, slug, template_name='podcast/show_feed.html'):
         mimetype='application/rss+xml',
         slug_field='slug',
         slug=slug,
-        template_name=template_name)
+        template_name=template_name,
+        extra_context={
+          'request': request,
+        })
 
 
 def show_list_media(request, slug, template_name='podcast/show_feed_media.html'):
@@ -131,4 +137,7 @@ def show_list_media(request, slug, template_name='podcast/show_feed_media.html')
         mimetype='application/rss+xml',
         slug_field='slug',
         slug=slug,
-        template_name=template_name)
+        template_name=template_name,
+        extra_context={
+          'request': request,
+        })
