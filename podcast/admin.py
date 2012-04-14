@@ -50,6 +50,15 @@ class EnclosureInline(admin.StackedInline):
 class EnclosureAdmin(admin.ModelAdmin):
     list_display = ('title', 'file', 'player', 'mime')
     list_filter = ('mime',)
+    fieldsets = (
+        (None, {
+            'fields': ('file','mime',)
+        }),
+        ('Extras', {
+            'classes': ('collapse',),
+            'fields': ('title','medium','expression','frame','bitrate','sample','channel','algo','hash','player','embed','width','height')
+        }),
+    )
 
 
 class EpisodeAdmin(admin.ModelAdmin):
