@@ -439,6 +439,7 @@ class Episode(models.Model):
     slug = models.SlugField(unique=True, help_text='Auto-generated from Title.')
     description_type = models.CharField('Description type', max_length=255, blank=True, default='Plain', choices=TYPE_CHOICES)
     description = models.TextField(help_text='Avoid explicit language. Google video sitempas allow 2,048 characters.')
+    notes = models.TextField(help_text='Any links, etc. to display on the site alongside the show. Use HTML or Markdown.')
     captions = models.FileField(upload_to='podcasts/episodes/captions/', storage=PODCAST_STORAGE(), help_text='For video podcasts. Good captioning choices include <a href="http://en.wikipedia.org/wiki/SubViewer">SubViewer</a>, <a href="http://en.wikipedia.org/wiki/SubRip">SubRip</a> or <a href="http://www.w3.org/TR/ttaf1-dfxp/">TimedText</a>.', blank=True)
     category = models.CharField(max_length=255, blank=True, help_text='Limited to one user-specified category for the sake of sanity.')
     domain = models.URLField(blank=True, help_text='A URL that identifies a categorization taxonomy.')
