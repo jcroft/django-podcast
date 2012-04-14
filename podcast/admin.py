@@ -64,7 +64,7 @@ class EpisodeAdmin(admin.ModelAdmin):
     radio_fields = {'title_type': admin.HORIZONTAL, 'description_type': admin.HORIZONTAL, 'status': admin.HORIZONTAL}
     fieldsets = (
         (None, {
-            'fields': ('show', 'author', 'title_type', 'title', 'slug', 'description_type', 'description', 'captions', 'category', 'domain', 'frequency', 'priority', 'status', 'date')
+            'fields': ('show', 'author', 'title_type', 'title', 'slug', 'description_type', 'description', 'notes', 'captions', 'category', 'domain', 'frequency', 'priority', 'status', 'date')
         }),
         ('iTunes', {
             'fields': ('subtitle', 'summary', ('minutes', 'seconds'), 'keywords', ('explicit', 'block'))
