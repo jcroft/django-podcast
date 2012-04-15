@@ -195,8 +195,23 @@ class Show(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('podcast_episodes', (), {'slug': self.slug})
+        return ('podcast_show_detail', (), {'slug': self.slug})
 
+    @models.permalink
+    def get_feed_url(self):
+        return ('podcast_show_feed', (), {'slug': self.slug})
+
+    @models.permalink
+    def get_atom_feed_url(self):
+        return ('podcast_show_feed_atom', (), {'slug': self.slug})
+
+    @models.permalink
+    def get_media_rss_feed_url(self):
+        return ('podcast_show_feed_media_rss', (), {'slug': self.slug})
+
+    @models.permalink
+    def get_sitemap_url(self):
+        return ('podcast_show_sitemap', (), {'slug': self.slug})
 
 class MediaCategory(models.Model):
     """Category model for Media RSS"""
@@ -488,7 +503,7 @@ class Episode(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('podcast_episode', (), {'show_slug': self.show.slug, 'episode_slug': self.slug})
+        return ('podcast_episode_detail', (), {'show_slug': self.show.slug, 'episode_slug': self.slug})
 
     def seconds_total(self):
         try:

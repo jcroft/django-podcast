@@ -1,47 +1,75 @@
 from django.views.generic.list_detail import object_detail, object_list
-from podcast.models import Episode, Show, Enclosure
+
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.shortcuts import get_object_or_404, get_list_or_404, render_to_response, render, redirect
+from django.contrib import messages
+from django.core.urlresolvers import reverse
+
+from models import Episode, Show, Enclosure
 
 
-def episode_detail(request, show_slug, episode_slug):
-    """
-    Episode detail
-
-    Template:  ``podcast/episode_detail.html``
-    Context:
-        object_detail
-            Detail of episode.
-    """
-    return object_detail(
-        request=request,
-        queryset=Episode.objects.published().filter(show__slug__exact=show_slug),
-        slug=episode_slug,
-        slug_field='slug',
-        extra_context={
-            'enclosure_list': Enclosure.objects.filter(episode__show__slug__exact=show_slug).filter(episode__slug__exact=episode_slug).order_by('-episode__date')},
-        template_name='podcast/episode_detail.html')
 
 
-def episode_list(request, slug):
-    """
-    Episode list
+def podcast_show_list(request):
 
-    Template:  ``podcast/episode_list.html``
-    Context:
-        object_list
-            List of episodes.
-    """
-    return object_detail(
-        request=request,
-        queryset=Show.objects.all(),
-        slug_field='slug',
-        slug=slug,
-        extra_context={
-            'object_list': Episode.objects.published().filter(show__slug__exact=slug),
-        },
-        template_name='podcast/episode_list.html')
+  # Get the show and episodes
+  shows      = Show.objects.all()
+
+  # Render the template
+  template = 'podcast/show_list.html'
+  context = {
+    'shows': shows,
+  }
+  return render(request, template, context)
 
 
-def episode_sitemap(request, slug):
+
+
+def podcast_show_detail(request, slug):
+
+  # Get the show and episodes
+  show      = get_object_or_404(Show, slug=slug)
+  episodes  = Episode.objects.published().filter(show=show)
+
+  # Render the template
+  template = 'podcast/show_detail.html'
+  context = {
+    'show': show,
+    'episodes': episodes,
+  }
+  return render(request, template, context)
+
+
+
+
+def podcast_episode_detail(request, show_slug, episode_slug):
+
+  # Get the show in question
+  show = get_object_or_404(Show, slug=show_slug)
+  
+  # Get the episode in question
+  try:
+    episode = Episode.objects.published().get(show=show, slug=episode_slug) 
+  except Episode.DoesNotExist:
+    raise Http404
+
+  # Render the template
+  template = 'podcast/episode_detail.html'
+  context = {
+    'show': show,
+    'episode': episode,
+  }
+  return render(request, template, context)
+
+
+
+
+
+
+
+
+def podcast_show_sitemap(request, slug):
     """
     Episode sitemap
 
@@ -59,31 +87,9 @@ def episode_sitemap(request, slug):
         template_name='podcast/episode_sitemap.html')
 
 
-def show_list(request, slug=None, template_name='podcast/show_list.html', page=0, paginate_by=25, mimetype=None):
-    """
-    Episode list
-    - feed by show
-
-    Template:  ``podcast/show_list.html``
-    Context:
-        object_list
-            List of shows.
-    """
-
-    if slug:
-        shows = Show.objects.filter(slug__exact=slug)
-    else:
-        shows = Show.objects.all()
-
-    return object_list(
-        request=request,
-        queryset=shows,
-        template_name=template_name,
-        paginate_by=paginate_by,
-        page=page)
 
 
-def show_list_atom(request, slug, template_name='podcast/show_feed_atom.html'):
+def podcast_show_feed_atom(request, slug, template_name='podcast/show_feed_atom.html'):
     """
     Episode Atom feed for a given show
 
@@ -103,7 +109,7 @@ def show_list_atom(request, slug, template_name='podcast/show_feed_atom.html'):
         })
 
 
-def show_list_feed(request, slug, template_name='podcast/show_feed.html'):
+def podcast_show_feed(request, slug, template_name='podcast/show_feed.html'):
     """
     Episode RSS feed for a given show
 
@@ -123,7 +129,10 @@ def show_list_feed(request, slug, template_name='podcast/show_feed.html'):
         })
 
 
-def show_list_media(request, slug, template_name='podcast/show_feed_media.html'):
+
+
+
+def podcast_show_feed_media_rss(request, slug, template_name='podcast/show_feed_media_rss.html'):
     """
     Episode Media feed for a given show
 
