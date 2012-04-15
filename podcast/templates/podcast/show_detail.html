@@ -3,15 +3,10 @@
 {% block content %}
   <h2>{{ show.title }}</h2>
 
-  <table>
-    <th class="numeric">#</th>
-    <th>Title</th>
+  <ul>
     {% for episode in episodes %}
-      <tr>
-        <td class="numeric">{{ forloop.counter }}</td>
-        <td><a href="{{ episode.get_absolute_url }}">{{ episode.title }}</a></td>
-      </tr>
+      <li><a href="{{ episode.get_absolute_url }}">{{ episode.title }}</a></li>
     {% endfor %}
-  </table>
+  </ul>
   
 {% endblock %}
