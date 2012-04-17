@@ -213,6 +213,13 @@ class Show(models.Model):
     def get_sitemap_url(self):
         return ('podcast_show_sitemap', (), {'slug': self.slug})
 
+    def get_latest_episode(self):
+        queryset = self.episode_set.all().order_by('-date')
+        if queryset:
+            return queryset[0]
+        return None
+
+
 class MediaCategory(models.Model):
     """Category model for Media RSS"""
     MEDIA_CATEGORY_CHOICES = (
