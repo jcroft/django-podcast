@@ -14,7 +14,7 @@
     <item>
         <pubDate>{{ episode.date|date:"r" }} GMT</pubDate>
         {% for enclosure in episode.enclosure_set.all %}
-        <media:content{% if enclosure.file %} url="http://{{ request.META.HTTP_HOST }}{{ enclosure.file.url }}"{% endif %}{% if enclosure.file.medium %} medium="{{ enclosure.file.medium|lower }}"{% endif %}{% if enclosure.file.mime %} type="{{ enclosure.file.mime|lower }}"{% endif %} fileSize="{{ enclosure.file.size }}" lang="{{ episode.show.language|lower }}"{% if enclosure.expression %} expression="{{ enclosure.expression|lower }}"{% endif %}{% if enclosure.bitrate %} bitrate="{{ enclosure.bitrate }}"{% endif %}{% if enclosure.frame %} framerate="{{ enclosure.frame }}"{% endif %}{% if enclosure.sample %} samplingrate="{{ enclosure.sample }}"{% endif %}{% if enclosure.channel %} channels="{{ enclosure.channel }}"{% endif %}{% ifequal enclosure.medium "Image" %} width="{{ enclosure.file.width }}" height="{{ enclosure.file.height }}"{% endifequal %}{% if forloop.first  %} isDefault="true"{% endif %}>
+        <media:content{% if enclosure.file %} url="{{ enclosure.file.url }}"{% endif %}{% if enclosure.file.medium %} medium="{{ enclosure.file.medium|lower }}"{% endif %}{% if enclosure.file.mime %} type="{{ enclosure.file.mime|lower }}"{% endif %} fileSize="{{ enclosure.file.size }}" lang="{{ episode.show.language|lower }}"{% if enclosure.expression %} expression="{{ enclosure.expression|lower }}"{% endif %}{% if enclosure.bitrate %} bitrate="{{ enclosure.bitrate }}"{% endif %}{% if enclosure.frame %} framerate="{{ enclosure.frame }}"{% endif %}{% if enclosure.sample %} samplingrate="{{ enclosure.sample }}"{% endif %}{% if enclosure.channel %} channels="{{ enclosure.channel }}"{% endif %}{% ifequal enclosure.medium "Image" %} width="{{ enclosure.file.width }}" height="{{ enclosure.file.height }}"{% endifequal %}{% if forloop.first  %} isDefault="true"{% endif %}>
             {% if enclosure.player %}<media:player url="{{ enclosure.player }}"{% if enclosure.width %} width="{{ enclosure.width }}"{% endif %}{% if enclosure.height %} height="{{ enclosure.height }}"{% endif %}/>{% endif %}
             <media:title{% if episode.title_type %} type="{{ episode.title_type|lower }}"{% endif %}>{{ episode.title }}</media:title>
             <media:description{% if episode.description_type %} type="{{ episode.description_type|lower }}"{% endif %}>{{ episode.description }}</media:description>
@@ -25,7 +25,7 @@
             {% endfor %}{% endif %}
             {% if enclosure.hash %}<media:hash{% if enclosure.algo %} algo="{{ enclosure.algo|lower }}"{% endif %}>{{ enclosure.hash }}</media:hash>{% endif %}
             {% if episode.text %}{{ episode.text }}{% endif %}
-            {% if episode.image %}<media:thumbnail url="http://{{ request.META.HTTP_HOST }}{{ episode.image.url }}" width="{{ episode.image.width }}" height="{{ episode.image.height }}"/>{% endif %}
+            {% if episode.image %}<media:thumbnail url="{{ episode.image.url }}" width="{{ episode.image.width }}" height="{{ episode.image.height }}"/>{% endif %}
             {% if episode.rating %}<media:rating scheme="urn:{{ episode.rating|lower }}">{{ episode.standard|lower }}</media:rating>{% endif %}
             {% if episode.deny %}<media:restriction relationship="deny" type="country">{{ episode.restriction }}</media:restriction>{% endif %}
             {% if episode.keywords %}<media:keywords>{{ episode.keywords }}</media:keywords>{% endif %}
